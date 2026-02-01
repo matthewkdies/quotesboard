@@ -93,6 +93,14 @@ def get_from_secret_or_env[CastType](setting_name: str, env_type: type[CastType]
     return env_value
 
 
+def get_from_secret_or_env_or_none[CastType](setting_name: str, env_type: type[CastType]) -> CastType | None:
+    """Calls `app.core.settings.get_from_secret_or_env` and returns the value if found, otherwise returns `None`."""
+    try:
+        get_from_secret_or_env(setting_name, env_type)
+    except SettingNotFoundError:
+        return None
+
+
 class Settings(BaseSettings):
     """Contains the settings for the FastAPI application, which determine how the app will run."""
 
@@ -102,10 +110,10 @@ class Settings(BaseSettings):
     logging_level: LogLevel = Field(default=LogLevel.DEBUG if DEBUG else LogLevel.INFO)
     db_type: DBType = Field(default=DBType.SQLITE)
     db_name: str = Field(default_factory=lambda: get_from_secret_or_env("db_name", str))
-    db_user: str | None = Field(default_factory=lambda: get_from_secret_or_env("db_user", str))
-    db_password: str = Field(default_factory=lambda: get_from_secret_or_env("db_password", str))
-    db_port: int = Field(default=5432)
-    db_hostname: str = Field(default="quotesboard-postgres")
+    db_user: str | None = Field(default_factory=lambda: get_from_secret_or_env_or_none("db_user", str))
+    db_password: str | None = Field(default_factory=lambda: get_from_secret_or_env_or_none("db_password", str))
+    db_port: int | None = Field(default=5432)
+    db_hostname: str | None = Field(default="quotesboard-postgres")
 
     @property
     def db_url(self) -> str:
