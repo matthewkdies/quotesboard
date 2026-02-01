@@ -34,6 +34,13 @@ class LogLevel(Enum):
     CRITICAL = logging.CRITICAL
 
 
+class DBType(Enum):
+    """As Enum class for the supported database types for this app."""
+
+    SQLITE = "sqlite"
+    POSTGRES = "postgres"
+
+
 class SettingNotFoundError(Exception):
     """Raised if a given setting can't be found in the environment."""
 
@@ -93,14 +100,21 @@ class Settings(BaseSettings):
     app_name: str = APP_NAME
     session_id: UUID = Field(default_factory=uuid4)
     logging_level: LogLevel = Field(default=LogLevel.DEBUG if DEBUG else LogLevel.INFO)
-    db_user: str = Field(default_factory=lambda: get_from_secret_or_env("db_user", str))
-    db_password: str = Field(default_factory=lambda: get_from_secret_or_env("db_password", str))
+    db_type: DBType = Field(default=DBType.SQLITE)
     db_name: str = Field(default_factory=lambda: get_from_secret_or_env("db_name", str))
+    db_user: str | None = Field(default_factory=lambda: get_from_secret_or_env("db_user", str))
+    db_password: str = Field(default_factory=lambda: get_from_secret_or_env("db_password", str))
+    db_port: int = Field(default=5432)
+    db_hostname: str = Field(default="quotesboard-postgres")
 
     @property
     def db_url(self) -> str:
         """Generates the database URL based on the current settings."""
-        return f"sqlite:///./{self.db_name}"  # TODO: postgres?
+        if self.db_type == DBType.SQLITE:
+            return f"sqlite:///./{self.db_name}.db"  # TODO: postgres?
+        return (
+            f"postgresql+psycopg2://{self.db_user}:{self.db_password}@{self.db_hostname}:{self.db_port}/{self.db_name}"
+        )
 
 
 settings = Settings(debug=DEBUG)
