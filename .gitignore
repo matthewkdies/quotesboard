@@ -1,0 +1,8 @@
+.venv
+seed
+!seed/README.md
+__pycache__
+*.egg-info
+.coverage
+**/*.db
+.env

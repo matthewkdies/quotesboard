@@ -1,0 +1,92 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "quotesboard"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi[standard]>=0.128.0",
+    "passlib[bcrypt]>=1.7.4",
+    "python-jose[cryptography]>=3.5.0",
+    "sqlmodel>=0.0.31",
+    "pydantic-settings>=2.10.1",
+    "python-dotenv>=1.1.1",
+    "django-environ>=0.12.0",
+]
+
+[dependency-groups]
+dev = [
+    "alembic>=1.18.3",
+    "httpx>=0.28.1",
+]
+test = [
+    "httpx>=0.28.1",
+    "pytest>=8.4.1",
+    "pytest-cov>=7.0.0",
+]
+
+[tool.alembic]
+script_location = "%(here)s/app/alembic"
+file_template = "%%(rev)s_%%(slug)s"
+timezone = "EST5EDT"
+
+[[tool.alembic.post_write_hooks]]
+name = "ruff"
+type = "exec"
+executable = "ruff"
+options = "check --fix REVISION_SCRIPT_FILENAME"
+
+[tool.pytest.ini_options]
+pythonpath = "."
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = [
+    "F",
+    "E",
+    "W",
+    "C90",
+    "I",
+    "N",
+    "D",
+    "UP",
+    "YTT",
+    "ANN",
+    "B",
+    "A",
+    "COM",
+    "C4",
+    "DTZ",
+    "ISC",
+    "ICN",
+    "INP",
+    "PIE",
+    "PT",
+    "RET",
+    "SIM",
+    "TID",
+    "ARG",
+    "PLC",
+    "PLE",
+    "PLR",
+    "PLW",
+    "RUF",
+]
+ignore = ["D105", "ANN204"]
+unfixable = ["F401"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["ANN003", "D101", "D103"]
+"**/api/**/*.py" = ["PLR2004"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
