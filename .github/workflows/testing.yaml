@@ -28,7 +28,7 @@ jobs:
 
       - name: Run tests with coverage
         # generate both a terminal report and an HTML folder
-        run: uv run pytest --cov=app --cov-report=html --cov-report=term
+        run: DB_NAME=testing uv run pytest --cov=app --cov-report=html --cov-report=term
 
       # - name: Upload Coverage Report
       #   uses: actions/upload-artifact@v4
