@@ -8,13 +8,13 @@ from app.database import Author, Quote, SessionDep
 author_router = APIRouter()
 
 
-# @author_router.put("/author", response_model=Author)
-# def create_author(author: Author, session: SessionDep) -> Author:
-#     """Creates an `Author` in the database."""
-#     session.add(author)
-#     session.commit()
-#     session.refresh(author)
-#     return author
+@author_router.put("/author", response_model=Author)
+def create_author(author: Author, session: SessionDep) -> Author:
+    """Creates an `Author` in the database."""
+    session.add(author)
+    session.commit()
+    session.refresh(author)
+    return author
 
 
 @author_router.get("/author/{author_id}", response_model=Author)

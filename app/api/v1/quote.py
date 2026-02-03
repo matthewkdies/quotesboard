@@ -15,13 +15,13 @@ quote_router = APIRouter()
 templates = Jinja2Templates(directory=TEMPLATES_DIR)
 
 
-# @quote_router.put("/quote", response_model=Quote)
-# def create_quote(quote: Quote, session: SessionDep) -> Quote:
-#     """Creates an `Quote` in the database."""
-#     session.add(quote)
-#     session.commit()
-#     session.refresh(quote)
-#     return quote
+@quote_router.put("/quote", response_model=Quote)
+def create_quote(quote: Quote, session: SessionDep) -> Quote:
+    """Creates an `Quote` in the database."""
+    session.add(quote)
+    session.commit()
+    session.refresh(quote)
+    return quote
 
 
 def get_random_quote(session: SessionDep) -> Quote:
