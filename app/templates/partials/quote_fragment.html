@@ -1,0 +1,64 @@
+<div id="quote-display" class="animate-fade-in w-full max-w-4xl mx-auto">
+    <div class="mb-12 flex items-center gap-4">
+        <span class="bg-slate-900 text-white px-3 py-1 text-[10px] uppercase tracking-[0.4em] font-bold">
+            Executive Briefing
+        </span>
+        <div class="h-px flex-grow bg-slate-200"></div>
+        <span class="text-[10px] text-slate-400 font-mono">REF_ID: {{ quote.id }}-2026</span>
+    </div>
+
+    <div class="space-y-8 border-l-2 border-slate-900 pl-8 md:pl-16 py-2">
+        
+        {% if quote.before_context %}
+        <div class="mb-10">
+            <h3 class="text-[10px] uppercase tracking-[0.2em] text-slate-400 font-bold mb-3">Contextual Overview</h3>
+            <p class="text-sm text-slate-600 leading-relaxed max-w-2xl italic">
+                "{{ quote.before_context }}"
+            </p>
+        </div>
+        {% endif %}
+
+        <div class="space-y-12">
+            {% for sq in quote.single_quotes %}
+            <div class="group">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="text-[10px] uppercase tracking-widest font-bold text-slate-900">
+                        {{ sq.author.name }}
+                    </span>
+                    <span class="h-1 w-1 rounded-full bg-slate-300"></span>
+                    <span class="text-[9px] uppercase tracking-tighter text-slate-400 font-medium">
+                        Verified Contributor
+                    </span>
+                </div>
+                
+                <h1 class="text-4xl md:text-5xl serif-fancy italic font-bold leading-tight text-slate-800">
+                    "{{ sq.text }}"
+                </h1>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if quote.after_context %}
+        <div class="mt-12 pt-8 border-t border-slate-100">
+            <h3 class="text-[10px] uppercase tracking-[0.2em] text-slate-400 font-bold mb-3">Post-Action Summary</h3>
+            <p class="text-sm text-slate-600 leading-relaxed max-w-2xl italic">
+                {{ quote.after_context }}
+            </p>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="mt-20 flex flex-col items-center border-t border-slate-200 pt-10">
+        <button 
+            hx-get="/api/v1/quote/random" 
+            hx-target="#quote-display" 
+            hx-swap="outerHTML"
+            class="group relative px-12 py-4 bg-white border border-slate-900 text-slate-900 text-xs font-bold tracking-[0.3em] uppercase transition-all hover:bg-slate-900 hover:text-white overflow-hidden">
+            <span class="relative z-10">Request Next Data Point</span>
+        </button>
+        
+        <p class="mt-6 text-[9px] text-slate-400 uppercase tracking-widest font-medium">
+            Confidential • Internal Distribution Only • Quotesboard Systems © 2026
+        </p>
+    </div>
+</div>

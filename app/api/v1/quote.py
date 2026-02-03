@@ -26,6 +26,17 @@ def get_random_quote(session: SessionDep) -> Quote:
     return quote
 
 
+@quote_router.get("/quote/random", response_class=HTMLResponse)
+def get_random_quote_fragment(request: Request, session: SessionDep) -> HTMLResponse:
+    """Corresponds with the `partials/quote_fragment.html` template to create the quote fragment HTML."""
+    quote = get_random_quote(session)
+    author: Author = get_author_by_id(quote.single_quotes[-1].author_id, session)
+    return templates.TemplateResponse(
+        "partials/quote_fragment.html",
+        {"request": request, "quote": quote, "author": author},
+    )
+
+
 @quote_router.get("/quote/{quote_id}", response_model=Quote)
 def get_quote_by_id(quote_id: int, session: SessionDep) -> Quote:
     """Gets the `Quote` from the database with the given ID."""
