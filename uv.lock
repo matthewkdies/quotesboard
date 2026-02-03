@@ -940,6 +940,7 @@ source = { editable = "." }
 dependencies = [
     { name = "django-environ" },
     { name = "fastapi", extra = ["standard"] },
+    { name = "jinja2" },
     { name = "passlib", extra = ["bcrypt"] },
     { name = "pydantic-settings" },
     { name = "python-dotenv" },
@@ -962,6 +963,7 @@ test = [
 requires-dist = [
     { name = "django-environ", specifier = ">=0.12.0" },
     { name = "fastapi", extras = ["standard"], specifier = ">=0.128.0" },
+    { name = "jinja2", specifier = ">=3.1.6" },
     { name = "passlib", extras = ["bcrypt"], specifier = ">=1.7.4" },
     { name = "pydantic-settings", specifier = ">=2.10.1" },
     { name = "python-dotenv", specifier = ">=1.1.1" },
