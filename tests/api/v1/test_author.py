@@ -6,14 +6,15 @@ from fastapi.testclient import TestClient
 def test_create_and_get_author(client: TestClient) -> None:
     """Tests a basic `Author` creation and fetching based on ID."""
     # create a new Author
-    first_name = "Leroy"
-    last_name = "Jenkins"
+    raw_name = "Leroy_Jenkins"
+    first_name, last_name = raw_name.split("_")
     name = f"{first_name} {last_name}"
-    response = client.put("/api/v1/author", json={"first_name": first_name, "last_name": last_name})
+    response = client.put("/api/v1/author", json={"raw_name": raw_name})
     assert response.status_code == 200
     created_author = response.json()
     assert created_author["first_name"] == first_name
     assert created_author["last_name"] == last_name
+    assert created_author["name"] == name
     assert created_author["name"] == name
 
     # fetch + test the same Author
