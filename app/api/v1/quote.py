@@ -8,13 +8,13 @@ from app.database import Author, Quote, SessionDep
 quote_router = APIRouter()
 
 
-@quote_router.put("/quote", response_model=Quote)
-def create_author(quote: Quote, session: SessionDep) -> Quote:
-    """Creates an `Author` in the database."""
-    session.add(quote)
-    session.commit()
-    session.refresh(quote)
-    return quote
+# @quote_router.put("/quote", response_model=Quote)
+# def create_quote(quote: Quote, session: SessionDep) -> Quote:
+#     """Creates an `Quote` in the database."""
+#     session.add(quote)
+#     session.commit()
+#     session.refresh(quote)
+#     return quote
 
 
 @quote_router.get("/quote/random", response_model=Quote)
