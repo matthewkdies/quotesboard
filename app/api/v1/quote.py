@@ -17,11 +17,13 @@ quote_router = APIRouter()
 #     return quote
 
 
-@quote_router.get("/quote/random", response_model=Quote)
 def get_random_quote(session: SessionDep) -> Quote:
     """Gets a random quote from the database."""
     random_quote_statement = select(Quote).order_by(func.random())
-    return session.exec(random_quote_statement).one()
+    quote: Quote | None = session.exec(random_quote_statement).first()
+    if not quote:
+        raise HTTPException(status_code=500, detail="This isn't supposed to happen. Please try again!")
+    return quote
 
 
 @quote_router.get("/quote/{quote_id}", response_model=Quote)
